@@ -14,7 +14,7 @@ import clsx from 'clsx'
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './table'
 
-type RowClickHandler<T> = (row: Row<T>, e: React.MouseEvent<HTMLTableCellElement>) => void
+export type RowClickHandler<T> = (row: Row<T>, e: React.MouseEvent<HTMLTableCellElement>) => void
 
 export interface TanstackTableProps<T> {
   className?: string
@@ -31,7 +31,7 @@ export interface TanstackTableProps<T> {
   isLoading?: boolean
   loadingItems?: number
   isError?: boolean
-  onRowClick?: 'toggleSelect' | RowClickHandler<T>
+  onRowClick?: RowClickHandler<T>
   errorFallback?: React.ReactNode
   errorMessage?: React.ReactNode
   emptyFallback?: React.ReactNode
@@ -70,14 +70,6 @@ export function TanstackTable<T>({
   const emptyMessage = 'No data'
 
   const containerRef = useRef<HTMLTableElement>(null)
-
-  const onRowClick =
-    onRowClickProp === 'toggleSelect'
-      ? (() => {
-          const handler: RowClickHandler<T> = (row, e) => row.getToggleSelectedHandler()(e)
-          return handler
-        })()
-      : onRowClickProp
 
   return (
     <Table ref={containerRef} className={className}>
@@ -141,7 +133,7 @@ export function TanstackTable<T>({
                   <TableCell
                     key={cell.id}
                     className={clsx(classNames?.tableCell)}
-                    onClick={(e) => onRowClick?.(row, e)}
+                    onClick={(e) => onRowClickProp?.(row, e)}
                   >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>

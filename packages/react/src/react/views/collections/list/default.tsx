@@ -7,8 +7,11 @@ import { CollectionListTable } from './table'
 import { CollectionListPagination } from './table/pagination'
 import { CollectionListToolbar } from './toolbar'
 
+import { useNavigation } from '../../../providers'
+
 export function DefaultCollectionListPage() {
   const context = useCollectionList()
+  const { navigate } = useNavigation()
 
   return (
     <>
@@ -19,7 +22,10 @@ export function DefaultCollectionListPage() {
       />
       <CollectionListTableContainer>
         <CollectionListToolbar />
-        <CollectionListTable<any> columns={context.columns} onRowClick={undefined} />
+        <CollectionListTable<any>
+          columns={context.columns}
+          onRowClick={(r) => navigate(`./${context.slug}/${r.original.__id}`)}
+        />
         <CollectionListPagination />
       </CollectionListTableContainer>
     </>

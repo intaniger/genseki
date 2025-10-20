@@ -106,7 +106,6 @@ export function CollectionListTable<T extends BaseData>(props: CollectionListTab
       table={table}
       loadingItems={table.getTotalSize()}
       className="static"
-      onRowClick="toggleSelect"
       isLoading={props.isLoading ?? context.isQuerying ?? context.isMutating}
       isError={props.isError ?? context.isError}
       configuration={{

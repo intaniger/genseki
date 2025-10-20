@@ -1,7 +1,7 @@
 'use client'
 
 import type React from 'react'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { type SubmitErrorHandler, type SubmitHandler, useFormContext } from 'react-hook-form'
 
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -14,7 +14,7 @@ import { Underline } from '@tiptap/extension-underline'
 import StarterKit from '@tiptap/starter-kit'
 import z from 'zod'
 
-import type { CollectionLayoutProps, InferCreateFields } from '@genseki/react'
+import type { CollectionLayoutProps, InferCreateFields, RowClickHandler } from '@genseki/react'
 import {
   actionsColumn,
   BackColorExtension,
@@ -177,12 +177,17 @@ export const PostClientTable = (props: { children?: React.ReactNode }) => {
     columns: context.columns,
   })
 
+  const toggleRowSelection = useCallback<RowClickHandler<Post>>(
+    (row, e) => row.getToggleSelectedHandler()(e),
+    []
+  )
+
   return (
     <>
       <TanstackTable
         table={table}
         className="static"
-        onRowClick="toggleSelect"
+        onRowClick={toggleRowSelection}
         isLoading={query.isLoading}
         isError={query.isError}
         configuration={{
